@@ -1,8 +1,15 @@
 import os
+import time
+import logging
 
 import pymysql
 from flask import Flask, make_response, render_template
 from werkzeug.middleware.proxy_fix import ProxyFix
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+)
 
 app = Flask(__name__)
 
@@ -27,14 +34,16 @@ def increment_counter():
     try:
         with connection.cursor() as cursor:
             cursor.execute(
-                "UPDATE laskuri SET kaynnit = kaynnit + 1 WHERE id = 1"
+                "UPDATE week2_counter SET visits = visits + 1 WHERE id = 1"
             )
+            logging.info("Incremented counter in database")
             cursor.execute(
-                "SELECT kaynnit FROM laskuri WHERE id = 1"
+                "SELECT visits FROM week2_counter WHERE id = 1"
             )
-            kaynnit = cursor.fetchone()[0]
+            logging.info("Fetched updated counter value from database")
+            visits = cursor.fetchone()[0]
         connection.commit()
-        return kaynnit
+        return visits
     except Exception:
         connection.rollback()
         raise
@@ -43,7 +52,7 @@ def increment_counter():
 
 
 @app.route("/")
-def etusivu():
+def week2():
     visits = increment_counter()
     response = make_response(render_template("week2.html", visits=visits))
     # Selain ei saa näyttää vanhaa laskurin arvoa välimuistista
