@@ -1,0 +1,2 @@
+gunicorn==26.2.0
+PyMySQL==1.2.3
