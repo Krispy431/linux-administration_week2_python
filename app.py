@@ -2,9 +2,9 @@ import os
 import time
 import logging
 
-import pymysql
-from flask import Flask, make_response, render_template
-from werkzeug.middleware.proxy_fix import ProxyFix
+import pymysql # pyright: ignore[reportMissingModuleSource]
+from flask import Flask, make_response, render_template # pyright: ignore[reportMissingImports]
+from werkzeug.middleware.proxy_fix import ProxyFix # pyright: ignore[reportMissingImports]
 
 logging.basicConfig(
     level=logging.INFO,
